@@ -44,49 +44,40 @@ module XssTerminate
       ALLOWED_CORE_ATTRIBUTES | ALLOWED_CUSTOM_ATTRIBUTES
     end
 
-    def sanitize_field(sanitizer, field, serialized = false)
+    def sanitize_field sanitizer, field
       field = field.to_sym
-      if serialized
-        puts field
-        self[field].each_key { |key|
-          key = key.to_sym
-          self[field][key] = sanitizer.sanitize(self[field][key], scrubber: Rails::Html::PermitScrubber.new, encode_special_chars: false, attributes: sanitize_allowed_attributes)
-        }
+      if self[field]
+        self[field] = sanitizer.sanitize(self[field], scrubber: Rails::Html::PermitScrubber.new, encode_special_chars: false, attributes: sanitize_allowed_attributes)
       else
-        if self[field]
-          self[field] = sanitizer.sanitize(self[field], scrubber: Rails::Html::PermitScrubber.new, encode_special_chars: false, attributes: sanitize_allowed_attributes)
-        else
-          value = self.send("#{field}")
-          return unless value
-          value = sanitizer.sanitize(value, scrubber: Rails::Html::PermitScrubber.new, encode_special_chars: false, attributes: sanitize_allowed_attributes)
-          self.send("#{field}=", value)
-        end
+        value = self.send("#{field}")
+        return unless value
+        value = sanitizer.sanitize(value, scrubber: Rails::Html::PermitScrubber.new, encode_special_chars: false, attributes: sanitize_allowed_attributes)
+        self.send("#{field}=", value)
       end
     end
 
     def sanitize_columns(with = :full)
-      columns_serialized = self.class.serialized_attributes.keys
       only = eval "xss_terminate_#{with}_options[:only]"
       except = eval "xss_terminate_#{with}_options[:except]"
       unless except.empty?
         only.delete_if{ |i| except.include?( i.to_sym ) }
       end
-      return only, columns_serialized
+      return only
     end
 
     def sanitize_fields_with_full
       sanitizer = Rails::Html::FullSanitizer.new
-      columns, columns_serialized = sanitize_columns(:full)
+      columns = sanitize_columns :full
       columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
+        sanitize_field sanitizer, column.to_sym
       end
     end
 
     def sanitize_fields_with_white_list
       sanitizer = Rails::Html::WhiteListSanitizer.new
-      columns, columns_serialized = sanitize_columns(:white_list)
+      columns = sanitize_columns :white_list
       columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
+        sanitize_field sanitizer, column.to_sym
       end
    end
 
@@ -94,7 +85,7 @@ module XssTerminate
       sanitizer = HTML5libSanitize.new
       columns = sanitize_columns(:html5lib)
       columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
+        sanitize_field sanitizer, column.to_sym
       end
     end
 
