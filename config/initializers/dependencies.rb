@@ -25,4 +25,5 @@ require 'set_profile_region_from_city_state'
 require 'authenticated_system'
 require 'needs_profile'
 require 'white_list_filter'
+require 'notify_activity_to_profiles_job'
 
