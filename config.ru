@@ -20,6 +20,7 @@ rails_app = Rack::Builder.new do
 end
 
 run Rack::Cascade.new([
-  Noosfero::API::API,
+  # FIXME: rails5: missing rack-contrib, see Gemfile
+  #Noosfero::API::API,
   rails_app
 ])
