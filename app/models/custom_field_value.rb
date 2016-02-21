@@ -1,4 +1,4 @@
-class CustomFieldValue < ActiveRecord::Base
+class CustomFieldValue < ApplicationRecord
 
   belongs_to :custom_field
   belongs_to :customized, :polymorphic => true

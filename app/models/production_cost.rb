@@ -1,4 +1,4 @@
-class ProductionCost < ActiveRecord::Base
+class ProductionCost < ApplicationRecord
 
   belongs_to :owner, :polymorphic => true
 

@@ -1,4 +1,4 @@
-class OauthClientPlugin::Auth < ActiveRecord::Base
+class OauthClientPlugin::Auth < ApplicationRecord
 
   belongs_to :profile, class_name: 'Profile'
   belongs_to :provider, class_name: 'OauthClientPlugin::Provider'

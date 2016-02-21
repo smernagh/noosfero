@@ -1,4 +1,4 @@
-class License < ActiveRecord::Base
+class License < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 10},

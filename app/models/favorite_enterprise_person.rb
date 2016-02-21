@@ -1,4 +1,4 @@
-class FavoriteEnterprisePerson < ActiveRecord::Base
+class FavoriteEnterprisePerson < ApplicationRecord
 
   track_actions :favorite_enterprise, :after_create, keep_params: [:enterprise_name, :enterprise_url], if: proc{ |f| f.is_trackable? }
 

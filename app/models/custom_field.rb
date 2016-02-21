@@ -1,4 +1,4 @@
-class CustomField < ActiveRecord::Base
+class CustomField < ApplicationRecord
 
   serialize :customized_type
   serialize :extras

@@ -1,4 +1,4 @@
-class ValidationInfo < ActiveRecord::Base
+class ValidationInfo < ApplicationRecord
 
   belongs_to :organization
 

@@ -1,4 +1,4 @@
-class ToleranceTimePlugin::Publication < ActiveRecord::Base
+class ToleranceTimePlugin::Publication < ApplicationRecord
 
   belongs_to :target, :polymorphic => true
 

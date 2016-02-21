@@ -1,4 +1,4 @@
-class VolunteersPlugin::Assignment < ActiveRecord::Base
+class VolunteersPlugin::Assignment < ApplicationRecord
 
   belongs_to :profile
   belongs_to :period, class_name: 'VolunteersPlugin::Period'

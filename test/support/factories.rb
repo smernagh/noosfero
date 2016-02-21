@@ -5,9 +5,9 @@ module Noosfero::Factory
     attrs[:slug] = attrs[:name].to_slug if attrs[:name].present? && attrs[:slug].blank? && defaults[:slug].present?
     data = defaults_for(name.to_s.gsub('::','')).merge(attrs)
     klass = name.to_s.camelize.constantize
-    if klass.superclass != ActiveRecord::Base
-      data[:type] = klass.to_s
-    end
+
+    data[:type] = klass.to_s if klass.column_names.include? 'type'
+
     if options[:timestamps]
       fast_insert_with_timestamps(klass, data)
     else

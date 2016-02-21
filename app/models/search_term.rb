@@ -1,4 +1,4 @@
-class SearchTerm < ActiveRecord::Base
+class SearchTerm < ApplicationRecord
   validates_presence_of :term, :context
   validates_uniqueness_of :term, :scope => [:context_id, :context_type, :asset]
 

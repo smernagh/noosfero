@@ -1,4 +1,4 @@
-class OrdersCyclePlugin::Cycle < ActiveRecord::Base
+class OrdersCyclePlugin::Cycle < ApplicationRecord
 
   Statuses = %w[edition orders purchases receipts separation delivery closing]
   DbStatuses = %w[new] + Statuses

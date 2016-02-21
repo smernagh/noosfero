@@ -1,4 +1,4 @@
-class MailingSent < ActiveRecord::Base
+class MailingSent < ApplicationRecord
 
   belongs_to :mailing
   belongs_to :person

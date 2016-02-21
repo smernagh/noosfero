@@ -1,4 +1,4 @@
-class Input < ActiveRecord::Base
+class Input < ApplicationRecord
 
   belongs_to :product
   belongs_to :product_category

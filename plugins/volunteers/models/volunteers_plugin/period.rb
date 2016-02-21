@@ -1,4 +1,4 @@
-class VolunteersPlugin::Period < ActiveRecord::Base
+class VolunteersPlugin::Period < ApplicationRecord
 
   belongs_to :owner, polymorphic: true
 

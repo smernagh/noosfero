@@ -1,4 +1,4 @@
-class Scrap < ActiveRecord::Base
+class Scrap < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :content => {:label => _('Content'), :weight => 1},

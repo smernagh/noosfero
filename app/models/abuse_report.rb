@@ -1,4 +1,4 @@
-class AbuseReport < ActiveRecord::Base
+class AbuseReport < ApplicationRecord
 
   belongs_to :reporter, :class_name => 'Person'
   belongs_to :abuse_complaint

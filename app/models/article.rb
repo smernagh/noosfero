@@ -1,5 +1,5 @@
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
 
   acts_as_having_image
   include Noosfero::Plugin::HotSpot

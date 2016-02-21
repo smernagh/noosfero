@@ -1,4 +1,4 @@
-class Block < ActiveRecord::Base
+class Block < ApplicationRecord
 
   include ActionView::Helpers::TagHelper
 

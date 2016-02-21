@@ -1,4 +1,4 @@
-class Certifier < ActiveRecord::Base
+class Certifier < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 10},

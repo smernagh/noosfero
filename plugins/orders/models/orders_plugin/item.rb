@@ -1,4 +1,4 @@
-class OrdersPlugin::Item < ActiveRecord::Base
+class OrdersPlugin::Item < ApplicationRecord
 
   # flag used by items to compare them with products
   attr_accessor :product_diff

@@ -1,4 +1,4 @@
-class Qualifier < ActiveRecord::Base
+class Qualifier < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 1},

@@ -1,4 +1,4 @@
-class AnalyticsPlugin::Visit < ActiveRecord::Base
+class AnalyticsPlugin::Visit < ApplicationRecord
 
   belongs_to :profile
   has_many :page_views, class_name: 'AnalyticsPlugin::PageView', dependent: :destroy

@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 10},

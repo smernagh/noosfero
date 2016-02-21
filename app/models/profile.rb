@@ -1,7 +1,7 @@
 # A Profile is the representation and web-presence of an individual or an
 # organization. Every Profile is attached to its Environment of origin,
 # which by default is the one returned by Environment:default.
-class Profile < ActiveRecord::Base
+class Profile < ApplicationRecord
 
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
