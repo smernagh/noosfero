@@ -26,4 +26,5 @@ require 'authenticated_system'
 require 'needs_profile'
 require 'white_list_filter'
 require 'notify_activity_to_profiles_job'
+require 'profile_suggestions_job'
 

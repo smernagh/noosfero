@@ -15,7 +15,7 @@ Given /^the following users?$/ do |table|
 end
 
 Given /^"(.+)" is (invisible|visible)$/ do |user, visibility|
-  User.find_by(login: user).person.update({visible: (visibility == 'visible')}, without_protection: true)
+  User.find_by(login: user).person.update visible: (visibility == 'visible')
 end
 
 Given /^"(.+)" is (online|offline|busy) in chat$/ do |user, status|
@@ -225,7 +225,7 @@ Given /^the following states$/ do |table|
   table.hashes.each do |item|
     data = item.dup
     if validator = Enterprise.find_by(name: data.delete("validator_name"))
-      State.create!(data.merge(:environment => Environment.default, :validators => [validator]), :without_protection => true)
+      State.create! data.merge(environment: Environment.default, validators: [validator])
     else
       r = State.create!(data.merge(:environment => Environment.default))
     end
