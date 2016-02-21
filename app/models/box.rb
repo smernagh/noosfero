@@ -5,8 +5,6 @@ class Box < ActiveRecord::Base
   belongs_to :owner, :polymorphic => true
   has_many :blocks, -> { order 'position' }, dependent: :destroy
 
-  attr_accessible :owner
-
   include Noosfero::Plugin::HotSpot
 
   scope :with_position, -> { where 'boxes.position > 0' }

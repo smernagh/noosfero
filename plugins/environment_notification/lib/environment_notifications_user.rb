@@ -4,7 +4,5 @@ class EnvironmentNotificationsUser < ActiveRecord::Base
   belongs_to :user
   belongs_to :environment_notification, class_name: 'EnvironmentNotificationPlugin::EnvironmentNotification'
 
-  attr_accessible :user_id, :environment_notification_id
-
   validates_uniqueness_of :user_id, :scope => :environment_notification_id
 end

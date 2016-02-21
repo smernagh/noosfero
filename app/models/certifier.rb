@@ -1,7 +1,5 @@
 class Certifier < ActiveRecord::Base
 
-  attr_accessible :name, :environment
-
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 10},
     :description => {:label => _('Description'), :weight => 3},

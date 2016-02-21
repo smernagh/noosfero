@@ -3,8 +3,6 @@ class Forum < Folder
   acts_as_having_posts -> { reorder 'updated_at DESC' }
   include PostsLimit
 
-  attr_accessible :has_terms_of_use, :terms_of_use, :topic_creation
-
   settings_items :terms_of_use, :type => :string, :default => ""
   settings_items :has_terms_of_use, :type => :boolean, :default => false
   settings_items :topic_creation, :type => :string, :default => 'self'

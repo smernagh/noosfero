@@ -2,9 +2,6 @@ class OrganizationRatingsConfig < ActiveRecord::Base
 
   belongs_to :environment
 
-  attr_accessible :cooldown, :default_rating, :order, :per_page
-  attr_accessible :vote_once, :are_moderated, :environment_id
-
   ORDER_OPTIONS = {recent: _('More Recent'), best: _('Best Ratings')}
 
   MINIMUM_RATING = 1

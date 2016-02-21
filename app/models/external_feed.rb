@@ -10,8 +10,6 @@ class ExternalFeed < ActiveRecord::Base
     where '(fetched_at is NULL) OR (fetched_at < ?)', Time.now - FeedUpdater.update_interval
   }
 
-  attr_accessible :address, :enabled, :only_once
-
   def add_item(title, link, date, content)
     return if content.blank?
     doc = Nokogiri::HTML.fragment content

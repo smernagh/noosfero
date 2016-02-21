@@ -9,8 +9,6 @@ class EnvironmentNotificationPlugin::EnvironmentNotification < ActiveRecord::Bas
     "EnvironmentNotificationPlugin::DangerNotification"
   ]
 
-  attr_accessible :message, :environment_id, :active, :type, :display_only_in_homepage, :display_to_all_users, :display_popup, :title
-
   has_many :environment_notifications_users
   has_many :users, :through => :environment_notifications_users
 

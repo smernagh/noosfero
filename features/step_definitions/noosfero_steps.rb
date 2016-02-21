@@ -31,7 +31,7 @@ Given /^the following (community|communities|enterprises?|organizations?)$/ do |
     category = row.delete("category")
     img_name = row.delete("img")
     city = row.delete("region")
-    organization = klass.create!(row, :without_protection => true)
+    organization = klass.create! row
     if owner
       organization.add_admin(Profile[owner])
     end
@@ -204,7 +204,7 @@ Given /^the following products?$/ do |table|
       qualifier = Qualifier.find_by name: data.delete("qualifier")
       data.merge!(:qualifiers => [qualifier])
     end
-    product = Product.create!(data, :without_protection => true)
+    product = Product.create! data
   end
 end
 
@@ -215,8 +215,8 @@ Given /^the following inputs?$/ do |table|
     category = Category.find_by slug: data.delete("category").to_slug
     unit = Unit.find_by singular: data.delete("unit")
     solidary = data.delete("solidary")
-    input = Input.create!(data.merge(:product => product, :product_category => category, :unit => unit,
-                                     :is_from_solidarity_economy => solidary), :without_protection => true)
+    input = Input.create! data.merge(product: product, product_category: category, unit: unit,
+                                     is_from_solidarity_economy: solidary)
     input.update_attribute(:position,  data['position'])
   end
 end
@@ -254,7 +254,7 @@ end
 
 Given /^the following qualifiers$/ do |table|
   table.hashes.each do |row|
-    Qualifier.create!(row.merge(:environment_id => 1), :without_protection => true)
+    Qualifier.create! row.merge(environment_id: 1)
   end
 end
 
@@ -265,7 +265,7 @@ Given /^the following certifiers$/ do |table|
     if qualifiers_list
       row["qualifiers"] = qualifiers_list.split(', ').map{|i| Qualifier.find_by name: i }
     end
-    Certifier.create!(row.merge(:environment_id => 1), :without_protection => true)
+    Certifier.create! row.merge(environment_id: 1)
   end
 end
 
@@ -505,7 +505,7 @@ end
 
 Given /^the following units?$/ do |table|
   table.hashes.each do |row|
-    Unit.create!(row.merge(:environment_id => 1), :without_protection => true)
+    Unit.create! row.merge(environment_id: 1)
   end
 end
 

@@ -2,8 +2,6 @@ class Unit < ActiveRecord::Base
 
   acts_as_list scope: -> unit { where environment_id: unit.environment_id }
 
-  attr_accessible :name, :singular, :plural, :environment
-
   validates_presence_of :singular
   validates_presence_of :plural
 

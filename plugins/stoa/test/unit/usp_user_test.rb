@@ -16,7 +16,7 @@ class StoaPlugin::UspUserTest < ActiveSupport::TestCase
   ActiveRecord::Base.establish_connection(:test)
 
   def setup
-    StoaPlugin::UspUser.create({:codpes => 123456, :cpf => Digest::MD5.hexdigest(SALT+'12345678'), :birth_date => '1970-01-30'}, :without_protection => true)
+    StoaPlugin::UspUser.create codpes: 123456, cpf: Digest::MD5.hexdigest(SALT+'12345678'), birth_date: '1970-01-30'
   end
 
   should 'check existence of usp_id' do

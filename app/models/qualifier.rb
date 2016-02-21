@@ -1,7 +1,5 @@
 class Qualifier < ActiveRecord::Base
 
-  attr_accessible :name, :environment
-
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 1},
   }

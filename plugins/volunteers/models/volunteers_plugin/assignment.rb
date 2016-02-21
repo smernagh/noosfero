@@ -1,7 +1,5 @@
 class VolunteersPlugin::Assignment < ActiveRecord::Base
 
-  attr_accessible :profile_id
-
   belongs_to :profile
   belongs_to :period, class_name: 'VolunteersPlugin::Period'
 

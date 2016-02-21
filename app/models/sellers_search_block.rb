@@ -1,7 +1,5 @@
 class SellersSearchBlock < Block
 
-  attr_accessible :title
-
   def self.description
     _('Search for enterprises and products')
   end

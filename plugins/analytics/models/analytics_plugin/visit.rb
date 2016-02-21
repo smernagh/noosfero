@@ -1,8 +1,5 @@
 class AnalyticsPlugin::Visit < ActiveRecord::Base
 
-  attr_accessible *self.column_names
-  attr_accessible :profile
-
   belongs_to :profile
   has_many :page_views, class_name: 'AnalyticsPlugin::PageView', dependent: :destroy
 

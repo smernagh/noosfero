@@ -6,8 +6,6 @@ class CommentClassificationPlugin::Label < ActiveRecord::Base
 
   scope :enabled, -> { where enabled: true }
 
-  attr_accessible :name, :enabled, :color
-
   COLORS = ['red', 'green', 'yellow', 'gray', 'blue']
 
 end

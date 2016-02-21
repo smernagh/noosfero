@@ -1,8 +1,7 @@
 class ProfileSuggestion < ActiveRecord::Base
+
   belongs_to :person
   belongs_to :suggestion, :class_name => 'Profile', :foreign_key => :suggestion_id
-
-  attr_accessible :person, :suggestion, :suggestion_type, :categories, :enabled
 
   has_many :suggestion_connections, :foreign_key => 'suggestion_id'
   has_many :profile_connections, :through => :suggestion_connections, :source => :connection, :source_type => 'Profile'
@@ -67,7 +66,6 @@ class ProfileSuggestion < ActiveRecord::Base
 
   RULES.keys.each do |rule|
     settings_items rule
-    attr_accessible rule
   end
 
   # Number of suggestions by rule

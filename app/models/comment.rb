@@ -6,8 +6,6 @@ class Comment < ActiveRecord::Base
     :body => {:label => _('Content'), :weight => 2},
   }
 
-  attr_accessible :body, :author, :name, :email, :title, :reply_of_id, :source, :follow_article
-
   validates_presence_of :body
 
   belongs_to :source, :counter_cache => true, :polymorphic => true

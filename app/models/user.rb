@@ -6,8 +6,6 @@ require 'securerandom'
 # Rails generator.
 class User < ActiveRecord::Base
 
-  attr_accessible :login, :email, :password, :password_confirmation, :activated_at
-
   N_('Password')
   N_('Password confirmation')
   N_('Terms accepted')
@@ -109,8 +107,6 @@ class User < ActiveRecord::Base
   has_many :sessions, dependent: :destroy
   # holds the current session, see lib/authenticated_system.rb
   attr_accessor :session
-
-  attr_protected :activated_at
 
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :name

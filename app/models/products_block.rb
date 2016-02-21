@@ -1,7 +1,5 @@
 class ProductsBlock < Block
 
-  attr_accessible :product_ids
-
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers

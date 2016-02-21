@@ -3,8 +3,6 @@ class OrganizationRating < ActiveRecord::Base
   belongs_to :organization
   belongs_to :comment
 
-  attr_accessible :value, :person, :organization, :comment
-
   validates :value,
             :presence => true, :inclusion => {
               in: 1..5, message: _("must be between 1 and 5")
