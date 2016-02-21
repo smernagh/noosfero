@@ -404,7 +404,7 @@ class ProductTest < ActiveSupport::TestCase
 
     env_production_cost = fast_create(ProductionCost, :owner_id => ent.environment.id, :owner_type => 'Environment')
     ent_production_cost = fast_create(ProductionCost, :owner_id => ent.id, :owner_type => 'Profile')
-    create(PriceDetail, :product => product, :production_cost => env_production_cost, :product => product)
+    create(PriceDetail, product: product, production_cost: env_production_cost)
     assert_equal [env_production_cost, ent_production_cost], product.available_production_costs
   end
 
