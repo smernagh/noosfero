@@ -17,7 +17,7 @@ module Noosfero
     end
 
     def self.setup!(host)
-      if Noosfero::MultiTenancy.on? and ActiveRecord::Base.postgresql?
+      if Noosfero::MultiTenancy.on? and ApplicationRecord.postgresql?
         Noosfero::MultiTenancy.db_by_host = host
       end
     end

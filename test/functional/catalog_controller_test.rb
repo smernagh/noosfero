@@ -4,8 +4,6 @@ require 'catalog_controller'
 class CatalogControllerTest < ActionController::TestCase
   def setup
     @controller = CatalogController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     Environment.default.enable('products_for_enterprises')
     @enterprise = fast_create(Enterprise, :name => 'My enterprise', :identifier => 'testent')

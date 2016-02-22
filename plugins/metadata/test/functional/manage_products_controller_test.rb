@@ -5,8 +5,7 @@ class ManageProductsControllerTest < ActionController::TestCase
 
   def setup
     @controller = ManageProductsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @enterprise = fast_create(Enterprise, name: 'test', identifier: 'test_ent')
     @user = create_user_with_permission('test_user', 'manage_products', @enterprise)
     @environment = @enterprise.environment
