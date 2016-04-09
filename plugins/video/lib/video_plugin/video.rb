@@ -16,8 +16,6 @@ class VideoPlugin::Video < Article
   settings_items :video_thumbnail_height, :type=> :integer
   settings_items :video_duration, :type=> :integer, :default => 0
 
-  attr_accessible :video_url
-
   before_save :fill_video_properties
 
   def self.type_name
@@ -35,14 +33,14 @@ class VideoPlugin::Video < Article
   def self.description
     _('Display embedded videos.')
   end
-  
+
   def is_youtube?
     VideoPlugin::Video.is_youtube?(self.video_url)
   end
 
   def is_vimeo?
     VideoPlugin::Video.is_vimeo?(self.video_url)
-  end  
+  end
 
   include ActionView::Helpers::TagHelper
   def to_html(options={})

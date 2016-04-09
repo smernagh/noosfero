@@ -17,7 +17,6 @@ class CreateCommunity < Task
   end
 
   settings_items :custom_values
-  attr_accessible :custom_values
 
   def validate
     self.environment.required_community_fields.each do |field|
