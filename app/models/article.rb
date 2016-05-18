@@ -1,5 +1,7 @@
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
+
+  include SanitizeHelper
 
   attr_accessible :name, :body, :abstract, :profile, :tag_list, :parent,
                   :allow_members_to_edit, :translation_of_id, :language,
@@ -54,6 +56,7 @@ class Article < ActiveRecord::Base
   track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.is_trackable? && !a.image? }
 
   # xss_terminate plugin can't sanitize array fields
+  # sanitize_tag_list is used with SanitizeHelper
   before_save :sanitize_tag_list
 
   before_create do |article|
@@ -601,7 +604,7 @@ class Article < ActiveRecord::Base
   end
 
   def accept_category?(cat)
-    !cat.is_a?(ProductCategory)
+    true
   end
 
   def public?
@@ -803,11 +806,13 @@ class Article < ActiveRecord::Base
   end
 
   def body_images_paths
-    Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
+    paths = Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
       src = i['src']
       src = URI.escape src if self.new_record? # xss_terminate runs on save
       (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, src).to_s : src
     end
+    paths.unshift(URI.join(self.profile.environment.top_url, self.image.public_filename).to_s) if self.image.present?
+    paths
   end
 
   def more_comments_label
@@ -859,6 +864,10 @@ class Article < ActiveRecord::Base
     HashWithIndifferentAccess.new :name => name, :abstract => abstract, :body => body, :id => id, :parent_id => parent_id, :author => author
   end
 
+  def self.can_display_blocks?
+    true
+  end
+
   private
 
   def sanitize_tag_list
@@ -868,11 +877,6 @@ class Article < ActiveRecord::Base
 
   def strip_tag_name(tag_name)
     tag_name.gsub(/[<>]/, '')
-  end
-
-  def sanitize_html(text)
-    sanitizer = HTML::FullSanitizer.new
-    sanitizer.sanitize(text)
   end
 
   def parent_archived?

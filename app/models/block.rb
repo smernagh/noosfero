@@ -1,4 +1,4 @@
-class Block < ActiveRecord::Base
+class Block < ApplicationRecord
 
   attr_accessible :title, :subtitle, :display, :limit, :box_id, :posts_per_page,
                   :visualization_format, :language, :display_user,
@@ -74,6 +74,17 @@ class Block < ActiveRecord::Base
     end
 
     true
+  end
+
+  def visible_to_user?(user)
+    visible = self.display_to_user?(user)
+    if self.owner.kind_of?(Profile)
+      visible &= self.owner.display_info_to?(user)
+      visible &= (self.visible? || user && user.has_permission?(:edit_profile_design, self.owner))
+    elsif self.owner.kind_of?(Environment)
+      visible &= (self.visible? || user && user.has_permission?(:edit_environment_design, self.owner))
+    end
+    visible
   end
 
   def display_to_user?(user)
@@ -312,6 +323,14 @@ class Block < ActiveRecord::Base
 
   def add_observer(block)
     self.observers << block
+  end
+
+  def api_content
+    nil
+  end
+
+  def display_api_content_by_default?
+    false
   end
 
   private

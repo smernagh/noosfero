@@ -4,6 +4,7 @@ require 'tasks_controller'
 class TasksControllerTest < ActionController::TestCase
 
   self.default_params = {profile: 'testuser'}
+
   def setup
     @controller = TasksController.new
     @request    = ActionController::TestRequest.new
@@ -27,6 +28,37 @@ class TasksControllerTest < ActionController::TestCase
     assert assigns(:tasks)
   end
 
+ should 'get filtered tasks to autocomplete text field' do
+
+   #Create a admin user and a simple user
+   profile_admin = create_user('admin_tester').person
+   Environment.default.add_admin(profile_admin)
+   user = fast_create(Person,:name => 'FakeUser')
+
+   #Create a task of type 'ModerateUserRegistration'
+   task_data = {
+       :target => Environment.default,
+       :spam => false,
+       :data => {:user_id => user.id,:name => user.name}
+   }
+   ModerateUserRegistration.create!(task_data)
+
+   #Use admin user to your profile with a pending task above
+   @controller.stubs(:profile).returns(profile_admin)
+   login_as profile_admin.identifier
+
+   #Perform a http request to 'search_task' action with params
+   post :search_tasks, :filter_type =>'ModerateUserRegistration', :filter_text => 'Fak'
+
+   assert_response :success
+
+   #Check if json response matches with a 'FakeUser'
+   json_response = ActiveSupport::JSON.decode(@response.body)
+   value = json_response[0]['value']
+
+   assert_equal value, 'FakeUser'
+ end
+
   should 'list pending tasks without spam' do
     requestor = fast_create(Person)
     task_spam = Task.create!(:requestor => requestor, :target => profile, :spam => true)
@@ -43,7 +75,8 @@ class TasksControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template 'processed'
-    assert_kind_of Array, assigns(:tasks)
+    assert !assigns(:tasks).nil?
+    assert_kind_of ActiveRecord::Relation, assigns(:tasks)
   end
 
   should 'display task created_at' do
@@ -437,13 +470,13 @@ class TasksControllerTest < ActionController::TestCase
     t2 = CleanHouse.create!(:requestor => requestor, :target => profile)
     t3 = FeedDog.create!(:requestor => requestor, :target => profile)
 
-    get :index, :filter_type => t1.type, :filter_text => 'test'
+    post :index, :filter_type => t1.type, :filter_text => 'test'
 
     assert_includes assigns(:tasks), t1
     assert_not_includes assigns(:tasks), t2
     assert_not_includes assigns(:tasks), t3
 
-    get :index
+    post :index
 
     assert_includes assigns(:tasks), t1
     assert_includes assigns(:tasks), t2
@@ -728,6 +761,32 @@ class TasksControllerTest < ActionController::TestCase
     get :index
     assert_select "#on-reject-information-#{task.id} .template-selection"
     assert_equal [email_template], assigns(:rejection_email_templates)
+  end
+
+  should 'filter processed tasks by all filters' do
+    requestor = fast_create(Person)
+    closed_by = fast_create(Person)
+    class AnotherTask < Task; end
+
+    created_date = DateTime.now
+    processed_date = DateTime.now
+
+    task_params = {:status => Task::Status::FINISHED, :requestor => requestor, :target => profile, :created_at => created_date, :end_date => processed_date, :closed_by => closed_by, :data => {:field => 'some data field'}}
+
+    task = create(AnotherTask, task_params)
+    create(Task, task_params)
+    create(AnotherTask, task_params.clone.merge(:status => Task::Status::CANCELLED))
+    create(AnotherTask, task_params.clone.merge(:created_at => created_date - 1.day))
+    create(AnotherTask, task_params.clone.merge(:created_at => created_date + 1.day))
+    create(AnotherTask, task_params.clone.merge(:end_date => processed_date - 1.day))
+    create(AnotherTask, task_params.clone.merge(:end_date => processed_date + 1.day))
+    create(AnotherTask, task_params.clone.merge(:requestor => fast_create(Person, :name => 'another-requestor')))
+    create(AnotherTask, task_params.clone.merge(:closed_by => fast_create(Person, :name => 'another-closer')))
+    create(AnotherTask, task_params.clone.merge(:data => {:field => "other data field"}))
+
+    get :processed, :filter => {:type => AnotherTask, :status => Task::Status::FINISHED, :created_from => created_date, :created_until => created_date, :closed_from => processed_date, :closed_until => processed_date, :requestor => requestor.name, :closed_by => closed_by.name, :text => "some data field"}
+    assert_response :success
+    assert_equal [task], assigns(:tasks)
   end
 
 end

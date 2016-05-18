@@ -1,4 +1,6 @@
-class Scrap < ActiveRecord::Base
+class Scrap < ApplicationRecord
+
+  include SanitizeHelper
 
   attr_accessible :content, :sender_id, :receiver_id, :scrap_id
 
@@ -41,8 +43,7 @@ class Scrap < ActiveRecord::Base
   end
 
   def strip_all_html_tags
-    sanitizer = HTML::WhiteListSanitizer.new
-    self.content = sanitizer.sanitize(self.content, :tags => [])
+    self.content = sanitize_html(self.content)
   end
 
   def action_tracker_target

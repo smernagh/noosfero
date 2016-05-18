@@ -1,5 +1,7 @@
 class LinkListBlock < Block
 
+  include SanitizeHelper
+
   attr_accessible :links
 
   ICONS = [
@@ -79,15 +81,8 @@ class LinkListBlock < Block
     end
   end
 
-  def icons_options
-    ICONS.map do |i|
-      "<span title=\"#{i[1]}\" class=\"icon-#{i[0]}\" onclick=\"changeIcon(this, '#{i[0]}')\"></span>".html_safe
-    end
-  end
-
-  def sanitize_link(text)
-    sanitizer = HTML::WhiteListSanitizer.new
-    sanitizer.sanitize(text)
+  def icons
+    ICONS
   end
 
 end

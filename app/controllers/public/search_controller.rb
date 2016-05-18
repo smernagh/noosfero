@@ -3,7 +3,10 @@ class SearchController < PublicController
   helper TagsHelper
   include SearchHelper
   include ActionView::Helpers::NumberHelper
+  include SanitizeParams
 
+
+  before_filter :sanitize_params
   before_filter :redirect_asset_param, :except => [:assets, :suggestions]
   before_filter :load_category, :except => :suggestions
   before_filter :load_search_assets, :except => :suggestions
@@ -49,7 +52,6 @@ class SearchController < PublicController
     [
       [ :people, _('People'), :recent_people ],
       [ :enterprises, _('Enterprises'), :recent_enterprises ],
-      [ :products, _('Products'), :recent_products ],
       [ :events, _('Upcoming events'), :upcoming_events ],
       [ :communities, _('Communities'), :recent_communities ],
       [ :articles, _('Contents'), :recent_articles ]
@@ -75,14 +77,15 @@ class SearchController < PublicController
     full_text_search
   end
 
-  def products
-    @scope = @environment.products
-    full_text_search
-  end
-
   def enterprises
     @scope = visible_profiles(Enterprise)
     full_text_search
+  end
+
+  # keep URL compatibility
+  def products
+    return render_not_found unless defined? ProductsPlugin
+    redirect_to url_for(params.merge controller: 'products_plugin/search', action: :products)
   end
 
   def communities
@@ -134,7 +137,8 @@ class SearchController < PublicController
 
   def tag
     @tag = params[:tag]
-    @tag_cache_key = "tag_#{CGI.escape(@tag.to_s)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
+    tag_str = @tag.kind_of?(Array) ? @tag.join(" ") : @tag.to_str
+    @tag_cache_key = "tag_#{CGI.escape(tag_str)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
     if is_cache_expired?(@tag_cache_key)
       @searches[@asset] = {:results => environment.articles.tagged_with(@tag).paginate(paginate_options)}
     end
@@ -182,7 +186,6 @@ class SearchController < PublicController
       people:      _('People'),
       communities: _('Communities'),
       enterprises: _('Enterprises'),
-      products:    _('Products and Services'),
       events:      _('Events'),
     }
   end
@@ -256,12 +259,11 @@ class SearchController < PublicController
   end
 
   def available_assets
-    assets = {
+    {
       articles:    _('Contents'),
       enterprises: _('Enterprises'),
       people:      _('People'),
       communities: _('Communities'),
-      products:    _('Products and Services'),
     }
   end
 
