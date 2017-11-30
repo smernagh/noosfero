@@ -4,7 +4,7 @@ platform :ruby do
   gem 'pg',                     '~> 0.17'
   gem 'rmagick',                '~> 2.13'
   gem 'RedCloth',               '~> 4.2'
-  gem 'unicorn',                '~> 4.8'
+  gem 'unicorn',                '~> 5.2'
 end
 
 platform :jruby do
@@ -19,7 +19,7 @@ gem 'rails_autolink',           '~> 1.1.6'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1'
 gem 'nokogiri',                 (if RUBY_VERSION >= '2.4.0' then '~> 1.7.0' else '~> 1.6.0' end)
-gem 'will_paginate',            '~> 3.0.7'
+gem 'will_paginate',            '~> 3.1'
 gem 'pothoven-attachment_fu',   '~> 3.2.16'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
@@ -32,7 +32,7 @@ gem 'whenever',                 '~> 0.9.4', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
 gem 'diffy',                    '~> 3.0'
 gem 'slim'
-gem 'activerecord-session_store', ('1.0.0.pre' if RUBY_VERSION >= '2.3.0')
+gem 'activerecord-session_store', '1.0.0'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'honeypot-captcha'
 gem 'font-awesome-sass'
@@ -41,7 +41,7 @@ gem 'rspec-rails',            '~> 3.2'
 
 # API dependencies
 gem 'grape',                    '~> 0.12'
-gem 'grape-entity',             '~>0.4.8'
+gem 'grape-entity',             '~> 0.6.0'
 gem 'grape_logging'
 gem 'rack-cors'
 gem 'rack-contrib'
@@ -78,8 +78,8 @@ end
 group :cucumber, :test do
   gem 'capybara',               '~> 2.2'
   gem 'launchy'
-  gem 'cucumber',               '~> 1.3'
-  gem 'cucumber-rails',         '~> 1.4.2', require: false
+  gem 'cucumber',               '~> 2.4'
+  gem 'cucumber-rails',         '~> 1.4.3', require: false
   gem 'database_cleaner',       '~> 1.3'
   # Selenium WebDriver 3+ depends on geckodriver
   gem 'selenium-webdriver',     '>= 2.53', '< 3.0'
