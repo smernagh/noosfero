@@ -13,9 +13,9 @@ platform :jruby do
 end
 
 gem 'rails',                    '~> 4.2.4'
-gem 'fast_gettext',             '~> 0.9'
-gem 'acts-as-taggable-on',      '~> 3.5'
-gem 'rails_autolink',           '~> 1.1.5'
+gem 'fast_gettext',             '~> 1.2'
+gem 'acts-as-taggable-on',      '~> 4.0'
+gem 'rails_autolink',           '~> 1.1.6'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1'
 gem 'nokogiri',                 (if RUBY_VERSION >= '2.4.0' then '~> 1.7.0' else '~> 1.6.0' end)
