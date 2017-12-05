@@ -8,6 +8,8 @@ $binary_packages
 $source_packages
 EOF
 
+sudo apt-get -fy install gnupg
+
   sudo apt-key add - <<EOF
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.12 (GNU/Linux)
